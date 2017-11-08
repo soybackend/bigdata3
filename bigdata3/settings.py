@@ -51,9 +51,9 @@ WSGI_APPLICATION = 'bigdata3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bigdata3',
-        'USER': 'bigdata3',
-        'PASSWORD': 'bigdata3*',
+        'NAME': 'taller3_bigdata',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
         'PORT': 5432,
     }
