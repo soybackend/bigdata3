@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from pymongo import MongoClient
 import re
+
 
 def append_list_to_dict(dist, list):
     for x in list:
@@ -15,12 +16,23 @@ def append_value_to_dict(dist, value):
     else:
         dist[value] = 1
 
-def append_user_to_dict(dist, user):
+def append_user_to_dict(dist, tweet):
+    user = tweet['user']
     user_id = user['id']
     if user_id not in dist:
-        user['tweets_count'] = 1
+        if tweet['text'].startswith('RT'):
+            user['tweets_count'] = 0
+            user['rtweets_count'] = 1
+        else:
+            user['tweets_count'] = 1
+            user['rtweets_count'] = 0
     else:
-        user['tweets_count'] = dist[user_id]['tweets_count'] + 1
+        if tweet['text'].startswith('RT'):
+            user['tweets_count'] = dist[user_id]['tweets_count']
+            user['rtweets_count'] = dist[user_id]['rtweets_count'] + 1
+        else:
+            user['tweets_count'] = dist[user_id]['tweets_count'] + 1
+            user['rtweets_count'] = dist[user_id]['rtweets_count']
     dist[user_id] = user
     loc = dist[user_id]['location']
     if loc is not None and len(loc) != 0:
@@ -58,11 +70,10 @@ if __name__ == "__main__":
     total_RT = db.tweets.count({'payload':{'$regex':'^RT'}})
 
     # Accounts
-    tweets_accounts = db.tweets.find({}, {'tweet.user.id': 1, 'tweet.user.name': 1, 'tweet.user.screen_name': 1, 'tweet.user.location': 1, 'tweet.user.description': 1, '_id': 0})
+    tweets_accounts = db.tweets.find({}, {'tweet.user.id': 1, 'tweet.user.name': 1, 'tweet.user.screen_name': 1, 'tweet.user.location': 1, 'tweet.user.description': 1, 'tweet.text' : 1, '_id': 0})
     accounts = {}
     for account in tweets_accounts:
-        user = account['tweet']['user']
-        append_user_to_dict(accounts, user)
+        append_user_to_dict(accounts, account['tweet'])
     # print(accounts)
     for key, value in accounts.items():
         data = {
@@ -72,6 +83,7 @@ if __name__ == "__main__":
             "location" : value['location'],
             "description" : value['description'],
             "tweets_count" : value['tweets_count'],
+            "rtweets_count" : value['rtweets_count'],
         }
         # db.accounts.insert_one(data)
     total_accounts = len(accounts)
@@ -131,5 +143,4 @@ if __name__ == "__main__":
         "total_quotes" : len(qts),
     }
     print(data)
-
-# dto_id = db.summary.insert_one(data).inserted_id
+    # dto_id = db.summary.insert_one(data).inserted_id
