@@ -135,6 +135,7 @@ if __name__ == "__main__":
         }
         # db.quotes.insert_one(data)
 
+    # Summary
     data = {
         "total_tweets" : total_TW,
         "total_rts" : total_RT,
@@ -144,3 +145,49 @@ if __name__ == "__main__":
     }
     print(data)
     # dto_id = db.summary.insert_one(data).inserted_id
+
+    # Topics & Polarity
+    tweets_tp = db.tweets.find({}, {'topic_id': 1, 'polarity_id': 1, '_id': 0})
+    topics = {}
+    polarities = {}
+    for data in tweets_tp:
+        append_value_to_dict(topics, data['topic_id'])
+        append_value_to_dict(polarities, data['polarity_id'])
+    print(topics)
+    print(polarities)
+
+    for key, value in topics.items():
+        topic = 'otro'
+        if key == 1:
+            topic = 'proceso de paz'
+        elif key == 2:
+            topic = 'electoral'
+        elif key == 3:
+            topic = 'corrupción'
+
+        data = {
+            "topic_id" : key,
+            "topic" : topic,
+            "count" : value,
+        }
+        # db.topics.insert_one(data)
+
+    for key, value in polarities.items():
+        polarity = 'neutro'
+        if key == 1:
+            polarity = 'negativo'
+        elif key == 2:
+            polarity = 'casi negativo'
+        elif key == 3:
+            polarity = 'neutro'
+        elif key == 4:
+            polarity = 'casi positivo'
+        elif key == 5:
+            polarity = 'positivo'
+
+        data = {
+            "polarity_id" : key,
+            "polarity" : polarity,
+            "count" : value,
+        }
+        # db.polarities.insert_one(data)

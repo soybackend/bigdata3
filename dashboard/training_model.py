@@ -38,7 +38,11 @@ def build_classification_model(training_dataset):
     # create training dataset vectorizer
     training_dataset_vectorizer = count_vectorizer.fit_transform(
                                         training_dataset[0]).toarray()
-    # print(training_dataset_vectorizer)
+
+    # Save vocabulary
+    vocab = count_vectorizer.get_feature_names()
+    filename_vocabulary = 'classification_models/tweets.vocabulary'
+    pickle.dump(vocab, open(filename_vocabulary, 'wb'))
 
     # Naive Bayes - training
     model_topics = MultinomialNB()
@@ -48,25 +52,21 @@ def build_classification_model(training_dataset):
     model_polarities = model_polarities.fit(training_dataset_vectorizer, training_dataset[2])
 
     # save the model to disk
-    filename_model_topics = 'classification_models/naive_bayes_model_topics.sav'
+    filename_model_topics = 'classification_models/naive_bayes_topics.model'
     pickle.dump(model_topics, open(filename_model_topics, 'wb'))
 
-    filename_model_polarities = 'classification_models/naive_bayes_model_polarities.sav'
+    filename_model_polarities = 'classification_models/naive_bayes_polarities.model'
     pickle.dump(model_polarities, open(filename_model_polarities, 'wb'))
-
 
 if __name__ == "__main__":
     client = MongoClient('localhost', 27017)
     db = client.twitter
 
     # get tweets classified
-    tweets_classified = db.tweets_classified.find({}).limit(10)
+    tweets_classified = db.tweets_classified_training.find({})
 
     # create training dataset
     training_dataset = generate_training_dataset(tweets_classified)
-    print(training_dataset[0])
-    print(training_dataset[1])
-    print(training_dataset[2])
 
     # create classification models (topic and polarity)
     build_classification_model(training_dataset)

@@ -18,7 +18,7 @@ def load_file(path):
     # print (book.sheet_names())
 
     # get the first worksheet
-    sheet = book.sheet_by_index(0)
+    sheet = book.sheet_by_index(1)
 
     for index in range(1, sheet.nrows):
         cells = sheet.row_slice(rowx=index,
@@ -31,18 +31,25 @@ def load_file(path):
         elif topic == 'electoral':
             topic_id = 2
         elif topic == 'corrupción':
-            topic_id = 4
+            topic_id = 3
 
         polarity_id = sheet.cell(index, 4).value
         polarity = 'neutro'
         if polarity_id == 1:
             polarity = 'negativo'
+            polarity_id = 1
         elif polarity_id == 2:
             polarity = 'casi negativo'
+            polarity_id = 2
+        elif polarity_id == 3:
+            polarity = 'neutro'
+            polarity_id = 3
         elif polarity_id == 4:
             polarity = 'casi positivo'
+            polarity_id = 4
         elif polarity_id == 5:
             polarity = 'positivo'
+            polarity_id = 5
 
         data = {
             "id" : sheet.cell(index, 0).value,
@@ -53,8 +60,8 @@ def load_file(path):
             "polarity_id" : polarity_id,
             "polarity" : polarity,
         }
-        db.tweets_classified.insert_one(data)
+        db.tweets_classified_test.insert_one(data)
 
 if __name__ == "__main__":
-    path = "/Users/farruza/Downloads/ListadoTuits.xlsx"
+    path = "/Users/farruza/Downloads/ListadoTuits (1).xlsx"
     load_file(path)

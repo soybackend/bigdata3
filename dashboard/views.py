@@ -83,3 +83,86 @@ def quotes(request):
         result.append(json_data)
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
+
+def topics(request):
+    data = db['topics'].find({}).sort('count', -1)
+    # print(data)
+    result = []
+    for dto in data:
+        json_data = {
+            'topic_id': dto['topic_id'],
+            'topic': dto['topic'],
+            'count': dto['count'],
+        }
+        result.append(json_data)
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def polarities(request):
+    data = db['polarities'].find({}).sort('count', -1)
+    # print(data)
+    result = []
+    for dto in data:
+        json_data = {
+            'polarity_id': dto['polarity_id'],
+            'polarity': dto['polarity'],
+            'count': dto['count'],
+        }
+        result.append(json_data)
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def tweets(request):
+    limit = int(request.GET.get('limit'))
+    offset = int(request.GET.get('offset'))
+
+    if (limit is not None and offset is not None):
+        data = db['tweets'].find({}).skip(offset).limit(limit)
+        result = []
+        for dto in data:
+            try:
+                location = dto['location']['place']
+            except:
+                location = "Sin información"
+
+            json_data = {
+                'time': dto['tweet']['created_at'],
+                'text': dto['tweet']['text'],
+                'account': dto['tweet']['user']['screen_name'],
+                'location': location,
+                'topic_id': dto['topic_id'],
+                'topic' : get_topic(dto['topic_id']),
+                'polarity_id': dto['polarity_id'],
+                'polarity': get_polarity(dto['polarity_id']),
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def get_topic(key):
+    topic = 'Sin clasificar'
+    if key == 0:
+        topic = 'otro'
+    elif key == 1:
+        topic = 'proceso de paz'
+    elif key == 2:
+        topic = 'electoral'
+    elif key == 3:
+        topic = 'corrupción'
+    return topic
+
+def get_polarity(key):
+    polarity = 'Sin clasificar'
+    if key == 1:
+        polarity = 'negativo'
+    elif key == 2:
+        polarity = 'casi negativo'
+    elif key == 3:
+        polarity = 'neutro'
+    elif key == 4:
+        polarity = 'casi positivo'
+    elif key == 5:
+        polarity = 'positivo'
+    return polarity
