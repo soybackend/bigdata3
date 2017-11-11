@@ -28,59 +28,84 @@ def summary(request):
                         content_type="application/json; charset=utf-8")
 
 def accounts(request):
-    data = db['accounts'].find({})
-    # print(data)
-    result = []
-    for dto in data:
-        json_data = {
-            'id': dto['id'],
-            'name': dto['name'],
-            'username': dto['username'],
-            'location': dto['location'],
-            'description': dto['description'],
-            'tweets_count': dto['tweets_count'],
-            'rtweets_count': dto['rtweets_count'],
-        }
-        result.append(json_data)
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
+
+    if (limit is not None and offset is not None):
+        data = db['accounts'].find({}).skip(int(offset)).limit(int(limit))
+        # print(data)
+        result = []
+        for dto in data:
+            json_data = {
+                'id': dto['id'],
+                'name': dto['name'],
+                'username': dto['username'],
+                'location': dto['location'],
+                'image': dto['image'],
+                'description': dto['description'],
+                'tweets_count': dto['tweets_count'],
+                'rtweets_count': dto['rtweets_count'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
 def hashtags(request):
-    data = db['hashtags'].find({}).sort('count', -1)
-    # print(data)
-    result = []
-    for dto in data:
-        json_data = {
-            'hashtag': dto['hashtag'],
-            'count': dto['count'],
-        }
-        result.append(json_data)
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
+
+    if (limit is not None and offset is not None):
+        data = db['hashtags'].find({}).skip(int(offset)).limit(int(limit)).sort('count', -1)
+        # print(data)
+        result = []
+        for dto in data:
+            json_data = {
+                'hashtag': dto['hashtag'],
+                'count': dto['count'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
 def locations(request):
-    data = db['locations'].find({}).sort('count', -1)
-    # print(data)
-    result = []
-    for dto in data:
-        json_data = {
-            'location': dto['location'],
-            'count': dto['count'],
-        }
-        result.append(json_data)
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
+
+    if (limit is not None and offset is not None):
+        data = db['locations'].find({}).skip(int(offset)).limit(int(limit)).sort('count', -1)
+        # print(data)
+        result = []
+        for dto in data:
+            json_data = {
+                'location': dto['location'],
+                'count': dto['count'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
 def quotes(request):
-    data = db['quotes'].find({}).sort('count', -1)
-    # print(data)
-    result = []
-    for dto in data:
-        json_data = {
-            'quote': dto['quote'],
-            'count': dto['count'],
-        }
-        result.append(json_data)
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
+
+    if (limit is not None and offset is not None):
+        data = db['quotes'].find({}).skip(int(offset)).limit(int(limit)).sort('count', -1)
+        # print(data)
+        result = []
+        for dto in data:
+            json_data = {
+                'quote': dto['quote'],
+                'count': dto['count'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 

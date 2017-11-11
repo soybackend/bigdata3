@@ -70,7 +70,7 @@ if __name__ == "__main__":
     total_RT = db.tweets.count({'payload':{'$regex':'^RT'}})
 
     # Accounts
-    tweets_accounts = db.tweets.find({}, {'tweet.user.id': 1, 'tweet.user.name': 1, 'tweet.user.screen_name': 1, 'tweet.user.location': 1, 'tweet.user.description': 1, 'tweet.text' : 1, '_id': 0})
+    tweets_accounts = db.tweets.find({}, {'tweet.user.id': 1, 'tweet.user.name': 1, 'tweet.user.screen_name': 1, 'tweet.user.location': 1, 'tweet.user.description': 1, 'tweet.user.profile_image_url': 1, 'tweet.text' : 1, '_id': 0})
     accounts = {}
     for account in tweets_accounts:
         append_user_to_dict(accounts, account['tweet'])
@@ -82,10 +82,12 @@ if __name__ == "__main__":
             "username" : value['screen_name'],
             "location" : value['location'],
             "description" : value['description'],
+            "image" : value['profile_image_url'],
             "tweets_count" : value['tweets_count'],
             "rtweets_count" : value['rtweets_count'],
         }
-        # db.accounts.insert_one(data)
+        # print(data)
+        db.accounts.insert_one(data)
     total_accounts = len(accounts)
 
     # Locations
