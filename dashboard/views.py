@@ -113,11 +113,11 @@ def polarities(request):
                         content_type="application/json; charset=utf-8")
 
 def tweets(request):
-    limit = int(request.GET.get('limit'))
-    offset = int(request.GET.get('offset'))
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
 
     if (limit is not None and offset is not None):
-        data = db['tweets'].find({}).skip(offset).limit(limit)
+        data = db['tweets'].find({}).skip(int(offset)).limit(int(limit))
         result = []
         for dto in data:
             try:
