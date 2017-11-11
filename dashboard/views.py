@@ -85,7 +85,7 @@ def quotes(request):
                         content_type="application/json; charset=utf-8")
 
 def topics(request):
-    data = db['topics'].find({}).sort('count', -1)
+    data = db['topics'].find({}).sort('topic_id', 1)
     # print(data)
     result = []
     for dto in data:
@@ -99,7 +99,7 @@ def topics(request):
                         content_type="application/json; charset=utf-8")
 
 def polarities(request):
-    data = db['polarities'].find({}).sort('count', -1)
+    data = db['polarities'].find({}).sort('polarity_id', 1)
     # print(data)
     result = []
     for dto in data:
