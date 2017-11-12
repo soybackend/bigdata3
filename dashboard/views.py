@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from pymongo import MongoClient
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .classify_tweets import Classification
 
 
 client = MongoClient('localhost', 27017)
@@ -49,6 +51,35 @@ def accounts(request):
             result.append(json_data)
     else:
         result = 'Limit and offset parameters not found.'
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def accounts_classified(request):
+    data = db['account_classified'].find({})
+    # print(data)
+    result = []
+    for dto in data:
+        json_data = {
+            'account': dto['account'],
+            'type': dto['type'],
+            'topics': dto['topics'],
+            'polarities': dto['polarities'],
+            'polarity_score': dto['polarity_score'],
+        }
+        result.append(json_data)
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def accounts_classified_summary(request):
+    data = db['account_classified'].aggregate([{ '$group': { '_id' : '$type', 'count' : { '$sum' : 1} } }])
+    # print(data)
+    result = []
+    for dto in data:
+        json_data = {
+            'type': dto['_id'],
+            'count': dto['count'],
+        }
+        result.append(json_data)
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
@@ -191,3 +222,45 @@ def get_polarity(key):
     elif key == 5:
         polarity = 'positivo'
     return polarity
+
+@csrf_exempt
+def classify_tweet(request):
+    if request.method == 'POST':
+        classifier = Classification()
+        json_data = json.loads(request.body.decode('utf-8'))
+
+        # create dataset
+        dataset = classifier.generate_dataset_single_text(json_data['text'])
+        # Classify tweets by topic
+        clf_topics = classifier.classify_by_topic(dataset)
+        topic_id = int(clf_topics[0])
+        # Classify tweets by polarity
+        clf_polarities = classifier.classify_by_polarity(dataset)
+        polarity_id = int(clf_polarities[0])
+
+        result = {
+            'text': json_data['text'],
+            'topic_id': topic_id,
+            'topic' : get_topic(topic_id),
+            'polarity_id': polarity_id,
+            'polarity': get_polarity(polarity_id),
+        }
+    else:
+        result = "Method incorrect"
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+    # try:
+    #     json_data = json.loads(request.body.decode('utf-8'))
+    #     # create dataset
+    #     dataset = classifier.generate_dataset(json_data['text'])
+    #     # Classify tweets by topic
+    #     clf_topics = classifier.classify_by_topic(dataset)
+    #     # Classify tweets by polarity
+    #     clf_polarities = classifier.classify_by_polarity(dataset)
+    #
+    #     status = "ok"
+    # except:
+    #     status = "Data register error."
+    # return HttpResponse(json.dumps(status, ensure_ascii=False).encode('utf-8'),
+    #                     content_type="application/json; charset=utf-8")

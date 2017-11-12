@@ -1,54 +1,87 @@
 from pymongo import MongoClient
+import os
 import re
 import pickle
 import nltk
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics import precision_recall_fscore_support as score
-from sklearn.metrics import confusion_matrix
-from pymongo import MongoClient
 
-def get_preprocess_text(stopwords, text):
-    text = re.sub(r"http\S+", "", text)
-    text = re.sub(r"@\S+", "", text)
-    words = re.sub(r"[^A-Za-záéíóúÁÉÍÓÚñ]", " ", text).lower().split()
-    text = [w for w in words if not w in stopwords]
-    return " ".join(text)
 
-def generate_training_dataset(tweets_classified):
-    # load nltk data
-    nltk.download('stopwords')
-    # get spanish stopwords
-    spanish_stopwords = set(stopwords.words('spanish'))
+class Classification():
 
-    tweet_texts = []
-    tweet_topics = []
-    tweet_polarities = []
+    # load vocabulary
+    filename_vocabulary = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                       'classification_models/tweets.vocabulary')
+    vocabulary = pickle.load(open(filename_vocabulary, 'rb'))
 
-    for tweet in tweets_classified:
-        tweet_texts.append(get_preprocess_text(spanish_stopwords, tweet['text']))
-        tweet_topics.append(tweet['topic_id'])
-        tweet_polarities.append(tweet['polarity_id'])
-    return [tweet_texts, tweet_topics, tweet_polarities]
+    # load the model from disk
+    filename_model_topics = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                         'classification_models/naive_bayes_topics.model')
+    model_topics = pickle.load(open(filename_model_topics, 'rb'))
 
-def generate_dataset(tweets):
-    # load nltk data
-    nltk.download('stopwords')
-    # get spanish stopwords
-    spanish_stopwords = set(stopwords.words('spanish'))
+    filename_model_polarities = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                             'classification_models/naive_bayes_polarities.model')
+    model_polarities = pickle.load(open(filename_model_polarities, 'rb'))
 
-    tweet_texts = []
-
-    for tweet in tweets:
-        tweet_texts.append(get_preprocess_text(spanish_stopwords, tweet['payload']))
-    return [tweet_texts]
-
-def classify_data(model, vocabulary, dataset):
     # create count vectorizer
     count_vectorizer = CountVectorizer(analyzer = "word", tokenizer = None,
                                        preprocessor = None, stop_words = None,
                                        max_features = 2000, vocabulary = vocabulary)
 
-    # create training dataset vectorizer
-    dataset_vectorizer = count_vectorizer.transform(dataset[0]).toarray()
-    return model.predict(dataset_vectorizer)
+    def __init__(self):
+        pass
+
+    def get_preprocess_text(self, stopwords, text):
+        text = re.sub(r"http\S+", "", text)
+        text = re.sub(r"@\S+", "", text)
+        words = re.sub(r"[^A-Za-záéíóúÁÉÍÓÚñ]", " ", text).lower().split()
+        text = [w for w in words if not w in stopwords]
+        return " ".join(text)
+
+    def generate_training_dataset(self, tweets_classified):
+        # load nltk data
+        nltk.download('stopwords')
+        # get spanish stopwords
+        spanish_stopwords = set(stopwords.words('spanish'))
+
+        tweet_texts = []
+        tweet_topics = []
+        tweet_polarities = []
+
+        for tweet in tweets_classified:
+            tweet_texts.append(self.get_preprocess_text(spanish_stopwords, tweet['text']))
+            tweet_topics.append(tweet['topic_id'])
+            tweet_polarities.append(tweet['polarity_id'])
+        return [tweet_texts, tweet_topics, tweet_polarities]
+
+    def generate_dataset(self, tweets):
+        # load nltk data
+        nltk.download('stopwords')
+        # get spanish stopwords
+        spanish_stopwords = set(stopwords.words('spanish'))
+
+        tweet_texts = []
+
+        for tweet in tweets:
+            tweet_texts.append(self.get_preprocess_text(spanish_stopwords, tweet['payload']))
+        return [tweet_texts]
+
+    def generate_dataset_single_text(self, text):
+        # load nltk data
+        nltk.download('stopwords')
+        # get spanish stopwords
+        spanish_stopwords = set(stopwords.words('spanish'))
+
+        tweet_texts = []
+        tweet_texts.append(self.get_preprocess_text(spanish_stopwords, text))
+        return [tweet_texts]
+
+    def classify_by_topic(self, dataset):
+        # create training dataset vectorizer
+        dataset_vectorizer = self.count_vectorizer.transform(dataset[0]).toarray()
+        return self.model_topics.predict(dataset_vectorizer)
+
+    def classify_by_polarity(self, dataset):
+        # create training dataset vectorizer
+        dataset_vectorizer = self.count_vectorizer.transform(dataset[0]).toarray()
+        return self.model_polarities.predict(dataset_vectorizer)
