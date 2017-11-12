@@ -85,3 +85,29 @@ class Classification():
         # create training dataset vectorizer
         dataset_vectorizer = self.count_vectorizer.transform(dataset[0]).toarray()
         return self.model_polarities.predict(dataset_vectorizer)
+
+    def get_topic(self, key):
+        topic = 'Sin clasificar'
+        if key == 0:
+            topic = 'otro'
+        elif key == 1:
+            topic = 'proceso de paz'
+        elif key == 2:
+            topic = 'electoral'
+        elif key == 3:
+            topic = 'corrupción'
+        return topic
+
+    def get_polarity(self, key):
+        polarity = 'Sin clasificar'
+        if key == 1:
+            polarity = 'negativo'
+        elif key == 2:
+            polarity = 'casi negativo'
+        elif key == 3:
+            polarity = 'neutro'
+        elif key == 4:
+            polarity = 'casi positivo'
+        elif key == 5:
+            polarity = 'positivo'
+        return polarity
