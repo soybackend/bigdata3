@@ -188,9 +188,9 @@ def tweets(request):
                 'account': dto['tweet']['user']['screen_name'],
                 'location': location,
                 'topic_id': dto['topic_id'],
-                'topic' : get_topic(dto['topic_id']),
+                'topic' : dto['topic_name'],
                 'polarity_id': dto['polarity_id'],
-                'polarity': get_polarity(dto['polarity_id']),
+                'polarity': dto['polarity'],
             }
             result.append(json_data)
     else:

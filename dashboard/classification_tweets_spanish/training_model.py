@@ -41,7 +41,7 @@ def build_classification_model(training_dataset):
 
     # Save vocabulary
     vocab = count_vectorizer.get_feature_names()
-    filename_vocabulary = 'classification_models/tweets.vocabulary'
+    filename_vocabulary = '../classification_models/tweets.vocabulary'
     pickle.dump(vocab, open(filename_vocabulary, 'wb'))
 
     # Naive Bayes - training
@@ -52,10 +52,10 @@ def build_classification_model(training_dataset):
     model_polarities = model_polarities.fit(training_dataset_vectorizer, training_dataset[2])
 
     # save the model to disk
-    filename_model_topics = 'classification_models/naive_bayes_topics.model'
+    filename_model_topics = '../classification_models/naive_bayes_topics.model'
     pickle.dump(model_topics, open(filename_model_topics, 'wb'))
 
-    filename_model_polarities = 'classification_models/naive_bayes_polarities.model'
+    filename_model_polarities = '../classification_models/naive_bayes_polarities.model'
     pickle.dump(model_polarities, open(filename_model_polarities, 'wb'))
 
 if __name__ == "__main__":
