@@ -166,3 +166,12 @@ def get_polarity(key):
     elif key == 5:
         polarity = 'positivo'
     return polarity
+
+
+class TweetsView(TemplateView):
+    template_name = 'dashboard/tweets.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TweetsView, self).get_context_data(**kwargs)
+        context['tweets'] = db['tuits'].find({})        
+        return context

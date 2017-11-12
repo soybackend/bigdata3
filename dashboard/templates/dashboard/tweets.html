@@ -1,0 +1,76 @@
+{% extends 'dashboard/base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static "dashboard/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" %}">
+{% endblock %}
+
+{% block main %}
+<div class="contentpanel">
+
+  <ol class="breadcrumb breadcrumb-quirk">
+    <li><a href="index.html"><i class="fa fa-home mr5"></i> Home</a></li>
+    <li><a href="basic-tables.html">Tables</a></li>
+    <li class="active">Data Tables</li>
+  </ol>
+
+  <div class="panel">
+    <div class="panel-heading">
+      <h4 class="panel-title">Basic Styling</h4>
+      <p>DataTables has most features enabled by default, so all you need to do to use it with one of your own tables is to call the construction function.</p>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table id="dataTable1" class="table table-bordered table-striped-col">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start date</th>
+              <th>Salary</th>
+            </tr>
+          </thead>
+
+          <tfoot>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start date</th>
+              <th>Salary</th>
+            </tr>
+          </tfoot>
+
+          <tbody>
+            <tr>
+              <td>Tiger Nixon</td>
+              <td>System Architect</td>
+              <td>Edinburgh</td>
+              <td>61</td>
+              <td>2011/04/25</td>
+              <td>$320,800</td>
+            </tr>
+          </tbody>
+        </table>
+        {% for tweet in tweets %}        
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static "dashboard/lib/datatables/jquery.dataTables.js" %}"></script>
+<script src="{% static "dashboard/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js" %}"></script>
+<script>
+$(document).ready(function() {
+  'use strict';
+  $('#dataTable1').DataTable();
+});
+</script>
+{% endblock %}

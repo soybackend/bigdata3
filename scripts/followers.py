@@ -123,7 +123,7 @@ accounts = [
     'MintrabajoCol',
     'fecode',
     'piedadcordoba',
-    'ClaraLopezObre',
+    'bravorubendario',
     'ManosLimpiasCo'
 ]
 

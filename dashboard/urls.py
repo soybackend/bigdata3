@@ -2,7 +2,8 @@ from django.conf.urls import url
 
 from .views import (
     IndexView,
-    summary, accounts, hashtags, locations, quotes, polarities, topics, tweets
+    summary, accounts, hashtags, locations, quotes, polarities, topics, tweets,
+    TweetsView
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     url(r'^topics/$', topics, name='topics'),
     url(r'^polarities/$', polarities, name='polarities'),
     url(r'^tweets/$', tweets, name='tweets'),
+    url(r'^ver-tweets/$', TweetsView.as_view(), name='ver-tweets'),
 ]
