@@ -4,7 +4,7 @@
  *
  * Last compiled on Wednesday, July 22nd, 2015, 9:20:49 AM
  */
- 
+
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic,300italic,300);
 @import url(http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800);
 /*!
@@ -10313,9 +10313,9 @@ blockquote {
   margin: 0;
   border-top: 1px solid #eaecf0;
 }
-.user-list .media:first-child {
+/*.user-list .media:first-child {
   padding-top: 0;
-}
+}*/
 .user-list .media:last-child {
   padding-bottom: 0;
 }

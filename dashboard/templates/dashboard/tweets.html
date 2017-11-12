@@ -9,54 +9,53 @@
 <div class="contentpanel">
 
   <ol class="breadcrumb breadcrumb-quirk">
-    <li><a href="index.html"><i class="fa fa-home mr5"></i> Home</a></li>
-    <li><a href="basic-tables.html">Tables</a></li>
-    <li class="active">Data Tables</li>
+    <li><a href="{% url 'index'%}"><i class="fa fa-home mr5"></i> Dashboard</a></li>
+    <li class="active">Listado de Tweets</li>
   </ol>
 
   <div class="panel">
     <div class="panel-heading">
-      <h4 class="panel-title">Basic Styling</h4>
-      <p>DataTables has most features enabled by default, so all you need to do to use it with one of your own tables is to call the construction function.</p>
+      <h4 class="panel-title">Listado Completo de Tweets</h4>
+      <p>Se realizó la extracción de más de 40 mil tweets de las cuentas más relevanetes de los temas solicitados.</p>
     </div>
     <div class="panel-body">
       <div class="table-responsive">
         <table id="dataTable1" class="table table-bordered table-striped-col">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Office</th>
-              <th>Age</th>
-              <th>Start date</th>
-              <th>Salary</th>
+              <th>Usuario</th>
+              <th>Tema</th>
+              <th>Texto</th>
+              <th>Idioma</th>
+              <th>Ubicación</th>
+              <th>Polaridad</th>
             </tr>
           </thead>
 
           <tfoot>
             <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Office</th>
-              <th>Age</th>
-              <th>Start date</th>
-              <th>Salary</th>
+              <th>Usuario</th>
+              <th>Tema</th>
+              <th>Texto</th>
+              <th>Idioma</th>
+              <th>Ubicación</th>
+              <th>Polaridad</th>
             </tr>
           </tfoot>
 
           <tbody>
+            {% for tweet in tweets %}
             <tr>
-              <td>Tiger Nixon</td>
-              <td>System Architect</td>
-              <td>Edinburgh</td>
-              <td>61</td>
-              <td>2011/04/25</td>
-              <td>$320,800</td>
+              <td>{{tweet.tweet.user.screen_name}}</td>
+              <td>{{tweet.topic_id}}</td>
+              <td>{{tweet.payload}}</td>
+              <td>{{tweet.lang}}</td>
+              <td>{{tweet.location.place}}</td>
+              <td>{{tweet.polarity_id}}</td>
             </tr>
+            {% endfor %}
           </tbody>
         </table>
-        {% for tweet in tweets %}        
-        {% endfor %}
       </div>
     </div>
   </div>

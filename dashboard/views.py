@@ -34,7 +34,7 @@ def accounts(request):
     offset = request.GET.get('offset')
 
     if (limit is not None and offset is not None):
-        data = db['accounts'].find({}).skip(int(offset)).limit(int(limit))
+        data = db['accounts'].find({}).skip(int(offset)).limit(int(limit)).sort([('tweets_count', -1)])
         # print(data)
         result = []
         for dto in data:
@@ -229,8 +229,9 @@ class TweetsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(TweetsView, self).get_context_data(**kwargs)
-        context['tweets'] = db['tuits'].find({})        
+        context['tweets'] = db['tweets'].find({}).limit(5000)
         return context
+
 
 @csrf_exempt
 def classify_tweet(request):
@@ -273,3 +274,37 @@ def classify_tweet(request):
     #     status = "Data register error."
     # return HttpResponse(json.dumps(status, ensure_ascii=False).encode('utf-8'),
     #                     content_type="application/json; charset=utf-8")
+
+class PolaritiesView(TemplateView):
+    template_name = 'dashboard/polaridades.html'
+
+
+class AccountsView(TemplateView):
+    template_name = 'dashboard/cuentas.html'
+
+
+class HastagsView(TemplateView):
+    template_name = 'dashboard/hastags.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(HastagsView, self).get_context_data(**kwargs)
+        context['hashtags'] = db['hashtags'].find({})
+        return context
+
+
+class LocationsView(TemplateView):
+    template_name = 'dashboard/locations.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(LocationsView, self).get_context_data(**kwargs)
+        context['locations'] = db['locations'].find({}).sort('count', -1)
+        return context
+
+
+class QuotesView(TemplateView):
+    template_name = 'dashboard/quotes.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(QuotesView, self).get_context_data(**kwargs)
+        context['quotes'] = db['quotes'].find({}).sort('count', -1)
+        return context

@@ -14,8 +14,8 @@
   <link rel="stylesheet" href="{% static "dashboard/lib/fontawesome/css/font-awesome.css" %}">
   <link rel="stylesheet" href="{% static "dashboard/lib/weather-icons/css/weather-icons.css" %}">
   <link rel="stylesheet" href="{% static "dashboard/lib/ionicons/css/ionicons.css" %}">
-  <link rel="stylesheet" href="{% static "dashboard/lib/jquery-toggles/toggles-full.css" %}">
-  <link rel="stylesheet" href="{% static "dashboard/lib/morrisjs/morris.css" %}">
+  <!-- <link rel="stylesheet" href="{% static "dashboard/lib/jquery-toggles/toggles-full.css" %}"> -->
+  <!-- <link rel="stylesheet" href="{% static "dashboard/lib/morrisjs/morris.css" %}"> -->
 
   <link rel="stylesheet" href="{% static "dashboard/css/quirk.css" %}">
 
@@ -63,11 +63,14 @@
         <!-- ################# MAIN MENU ################### -->
 
         <div class="tab-pane active" id="mainmenu">
-          <h5 class="sidebar-title">Favorites</h5>
           <ul class="nav nav-pills nav-stacked nav-quirk">
-            <li class="active"><a href="index.html"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
-            <li><a href="widgets.html"><span class="badge pull-right">10+</span><i class="fa fa-cube"></i> <span>Widgets</span></a></li>
-            <li><a href="maps.html"><i class="fa fa-map-marker"></i> <span>Maps</span></a></li>
+            <li class="active"><a href="{% url 'index' %} "><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+            <li class="active"><a href="{% url 'polarities-view' %} "><i class="icon ion-ios-pulse-strong"></i> <span>Análisis de Polaridades</span></a></li>
+            <li class="active"><a href="{% url 'accounts-view' %} "><i class="icon ion-person-stalker"></i> <span>Cuentas Involucradas</span></a></li>
+            <li class="active"><a href="{% url 'hashtags-view' %} "><i class="icon icon ion-pound"></i> <span>Listado de Hastags</span></a></li>
+            <li class="active"><a href="{% url 'locations-view' %} "><i class="icon icon ion-ios-location"></i> <span>Listado de Ubicaciones</span></a></li>
+            <li class="active"><a href="{% url 'quotes-view' %} "><i class="icon icon ion-at"></i> <span>Listado de Citas</span></a></li>
+            <li class="active"><a href="{% url 'tweets-view' %} "><i class="icon icon ion-social-twitter"></i> <span>Listado de Tweets</span></a></li>
           </ul>
         </div>
       </div>
@@ -87,12 +90,12 @@
 <script src="{% static "dashboard/lib/bootstrap/js/bootstrap.js" %}"></script>
 <script src="{% static "dashboard/lib/jquery-toggles/toggles.js" %}"></script>
 
-<script src="{% static "dashboard/lib/morrisjs/morris.js" %}"></script>
-<script src="{% static "dashboard/lib/raphael/raphael.js" %}"></script>
+<!-- <script src="{% static "dashboard/lib/morrisjs/morris.js" %}"></script> -->
+<!-- <script src="{% static "dashboard/lib/raphael/raphael.js" %}"></script> -->
 
-<script src="{% static "dashboard/lib/flot/jquery.flot.js" %}"></script>
+<!-- <script src="{% static "dashboard/lib/flot/jquery.flot.js" %}"></script>
 <script src="{% static "dashboard/lib/flot/jquery.flot.resize.js" %}"></script>
-<script src="{% static "dashboard/lib/flot-spline/jquery.flot.spline.js" %}"></script>
+<script src="{% static "dashboard/lib/flot-spline/jquery.flot.spline.js" %}"></script> -->
 
 <script src="{% static "dashboard/lib/jquery-knob/jquery.knob.js" %}"></script>
 
