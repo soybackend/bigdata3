@@ -55,7 +55,10 @@ def accounts(request):
                         content_type="application/json; charset=utf-8")
 
 def accounts_classified(request):
-    data = db['account_classified'].find({})
+    sort = request.GET.get('sort')
+    if sort is None or sort not in ['1','-1']:
+        sort = -1
+    data = db['account_classified'].find({}).sort('polarity_score', int(sort))
     # print(data)
     result = []
     for dto in data:
@@ -260,21 +263,6 @@ def classify_tweet(request):
         result = "Method incorrect"
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
-
-    # try:
-    #     json_data = json.loads(request.body.decode('utf-8'))
-    #     # create dataset
-    #     dataset = classifier.generate_dataset(json_data['text'])
-    #     # Classify tweets by topic
-    #     clf_topics = classifier.classify_by_topic(dataset)
-    #     # Classify tweets by polarity
-    #     clf_polarities = classifier.classify_by_polarity(dataset)
-    #
-    #     status = "ok"
-    # except:
-    #     status = "Data register error."
-    # return HttpResponse(json.dumps(status, ensure_ascii=False).encode('utf-8'),
-    #                     content_type="application/json; charset=utf-8")
 
 class PolaritiesView(TemplateView):
     template_name = 'dashboard/polaridades.html'
