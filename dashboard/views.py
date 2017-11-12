@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from pymongo import MongoClient
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .classify_tweets import Classification
 
 
 client = MongoClient('localhost', 27017)
@@ -28,59 +30,113 @@ def summary(request):
                         content_type="application/json; charset=utf-8")
 
 def accounts(request):
-    data = db['accounts'].find({})
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
+
+    if (limit is not None and offset is not None):
+        data = db['accounts'].find({}).skip(int(offset)).limit(int(limit))
+        # print(data)
+        result = []
+        for dto in data:
+            json_data = {
+                'id': dto['id'],
+                'name': dto['name'],
+                'username': dto['username'],
+                'location': dto['location'],
+                'image': dto['image'],
+                'description': dto['description'],
+                'tweets_count': dto['tweets_count'],
+                'rtweets_count': dto['rtweets_count'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def accounts_classified(request):
+    data = db['account_classified'].find({})
     # print(data)
     result = []
     for dto in data:
         json_data = {
-            'id': dto['id'],
-            'name': dto['name'],
-            'username': dto['username'],
-            'location': dto['location'],
-            'description': dto['description'],
-            'tweets_count': dto['tweets_count'],
-            'rtweets_count': dto['rtweets_count'],
+            'account': dto['account'],
+            'type': dto['type'],
+            'topics': dto['topics'],
+            'polarities': dto['polarities'],
+            'polarity_score': dto['polarity_score'],
+        }
+        result.append(json_data)
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def accounts_classified_summary(request):
+    data = db['account_classified'].aggregate([{ '$group': { '_id' : '$type', 'count' : { '$sum' : 1} } }])
+    # print(data)
+    result = []
+    for dto in data:
+        json_data = {
+            'type': dto['_id'],
+            'count': dto['count'],
         }
         result.append(json_data)
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
 def hashtags(request):
-    data = db['hashtags'].find({}).sort('count', -1)
-    # print(data)
-    result = []
-    for dto in data:
-        json_data = {
-            'hashtag': dto['hashtag'],
-            'count': dto['count'],
-        }
-        result.append(json_data)
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
+
+    if (limit is not None and offset is not None):
+        data = db['hashtags'].find({}).skip(int(offset)).limit(int(limit)).sort('count', -1)
+        # print(data)
+        result = []
+        for dto in data:
+            json_data = {
+                'hashtag': dto['hashtag'],
+                'count': dto['count'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
 def locations(request):
-    data = db['locations'].find({}).sort('count', -1)
-    # print(data)
-    result = []
-    for dto in data:
-        json_data = {
-            'location': dto['location'],
-            'count': dto['count'],
-        }
-        result.append(json_data)
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
+
+    if (limit is not None and offset is not None):
+        data = db['locations'].find({}).skip(int(offset)).limit(int(limit)).sort('count', -1)
+        # print(data)
+        result = []
+        for dto in data:
+            json_data = {
+                'location': dto['location'],
+                'count': dto['count'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
 def quotes(request):
-    data = db['quotes'].find({}).sort('count', -1)
-    # print(data)
-    result = []
-    for dto in data:
-        json_data = {
-            'quote': dto['quote'],
-            'count': dto['count'],
-        }
-        result.append(json_data)
+    limit = request.GET.get('limit')
+    offset = request.GET.get('offset')
+
+    if (limit is not None and offset is not None):
+        data = db['quotes'].find({}).skip(int(offset)).limit(int(limit)).sort('count', -1)
+        # print(data)
+        result = []
+        for dto in data:
+            json_data = {
+                'quote': dto['quote'],
+                'count': dto['count'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Limit and offset parameters not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
@@ -175,3 +231,45 @@ class TweetsView(TemplateView):
         context = super(TweetsView, self).get_context_data(**kwargs)
         context['tweets'] = db['tuits'].find({})        
         return context
+
+@csrf_exempt
+def classify_tweet(request):
+    if request.method == 'POST':
+        classifier = Classification()
+        json_data = json.loads(request.body.decode('utf-8'))
+
+        # create dataset
+        dataset = classifier.generate_dataset_single_text(json_data['text'])
+        # Classify tweets by topic
+        clf_topics = classifier.classify_by_topic(dataset)
+        topic_id = int(clf_topics[0])
+        # Classify tweets by polarity
+        clf_polarities = classifier.classify_by_polarity(dataset)
+        polarity_id = int(clf_polarities[0])
+
+        result = {
+            'text': json_data['text'],
+            'topic_id': topic_id,
+            'topic' : get_topic(topic_id),
+            'polarity_id': polarity_id,
+            'polarity': get_polarity(polarity_id),
+        }
+    else:
+        result = "Method incorrect"
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+    # try:
+    #     json_data = json.loads(request.body.decode('utf-8'))
+    #     # create dataset
+    #     dataset = classifier.generate_dataset(json_data['text'])
+    #     # Classify tweets by topic
+    #     clf_topics = classifier.classify_by_topic(dataset)
+    #     # Classify tweets by polarity
+    #     clf_polarities = classifier.classify_by_polarity(dataset)
+    #
+    #     status = "ok"
+    # except:
+    #     status = "Data register error."
+    # return HttpResponse(json.dumps(status, ensure_ascii=False).encode('utf-8'),
+    #                     content_type="application/json; charset=utf-8")
