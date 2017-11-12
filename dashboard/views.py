@@ -149,6 +149,7 @@ def topics(request):
             'topic_id': dto['topic_id'],
             'topic': dto['topic'],
             'count': dto['count'],
+            'polarities' : dto['polarities'],
         }
         result.append(json_data)
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
