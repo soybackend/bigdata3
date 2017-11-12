@@ -72,8 +72,7 @@ $(document).ready(function() {
     var chart_data = [];
     data.forEach(function(quote){
       chart_data.push([quote.quote, quote.count])
-    });
-    console.log(chart_data);
+    });    
     Highcharts.chart('container', {
       chart: {
           type: 'column'

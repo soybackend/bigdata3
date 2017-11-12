@@ -309,3 +309,7 @@ class QuotesView(TemplateView):
         context = super(QuotesView, self).get_context_data(**kwargs)
         context['quotes'] = db['quotes'].find({}).sort('count', -1)
         return context
+
+
+class TopicsView(TemplateView):
+    template_name = 'dashboard/topics.html'
