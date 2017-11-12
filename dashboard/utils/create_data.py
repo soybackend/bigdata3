@@ -1,7 +1,7 @@
 # coding: utf-8
 from pymongo import MongoClient
 import re
-
+import numpy
 
 def append_list_to_dict(dist, list):
     for x in list:
@@ -60,6 +60,30 @@ def extract_field(prefix, text):
     except ValueError:
         pass
     return rs
+
+def get_topic(key):
+    topic = 'otro'
+    if key == 1:
+        topic = 'proceso de paz'
+    elif key == 2:
+        topic = 'electoral'
+    elif key == 3:
+        topic = 'corrupción'
+    return topic
+
+def get_polarity(key):
+    polarity = 'neutro'
+    if key == 1:
+        polarity = 'negativo'
+    elif key == 2:
+        polarity = 'casi negativo'
+    elif key == 3:
+        polarity = 'neutro'
+    elif key == 4:
+        polarity = 'casi positivo'
+    elif key == 5:
+        polarity = 'positivo'
+    return polarity
 
 if __name__ == "__main__":
     client = MongoClient('localhost', 27017)
@@ -159,34 +183,31 @@ if __name__ == "__main__":
     print(polarities)
 
     for key, value in topics.items():
-        topic = 'otro'
-        if key == 1:
-            topic = 'proceso de paz'
-        elif key == 2:
-            topic = 'electoral'
-        elif key == 3:
-            topic = 'corrupción'
+        # distribucion por polaridad
+        polarities_rs = db.tweets.aggregate([{ '$match': { 'topic_id' : key }},
+                                            { '$group': { '_id' : "$polarity_id", 'count':{ '$sum' : 1} } }])
+        polarities_tp = []
+        for p in polarities_rs:
+            pols = {
+                "polarity_id" : p['_id'],
+                "polarity" : get_polarity(p['_id']),
+                "count" : int(p['count']),
+                "average" : float(str(numpy.around((int(p['count']) / int(value)) * 100, 2))),
+            }
+            polarities_tp.append(pols)
 
+        topic = get_topic(key)
         data = {
             "topic_id" : key,
             "topic" : topic,
             "count" : value,
+            "polarities" : polarities_tp,
         }
+        # print(data)
         # db.topics.insert_one(data)
 
     for key, value in polarities.items():
-        polarity = 'neutro'
-        if key == 1:
-            polarity = 'negativo'
-        elif key == 2:
-            polarity = 'casi negativo'
-        elif key == 3:
-            polarity = 'neutro'
-        elif key == 4:
-            polarity = 'casi positivo'
-        elif key == 5:
-            polarity = 'positivo'
-
+        polarity = get_polarity(key)
         data = {
             "polarity_id" : key,
             "polarity" : polarity,
