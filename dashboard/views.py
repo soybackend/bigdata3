@@ -325,3 +325,7 @@ class QuotesView(TemplateView):
 
 class TopicsView(TemplateView):
     template_name = 'dashboard/topics.html'
+
+
+class TagCloudView(TemplateView):
+    template_name = 'dashboard/tagcloud.html'
