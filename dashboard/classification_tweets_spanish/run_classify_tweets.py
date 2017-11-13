@@ -25,7 +25,7 @@ if __name__ == "__main__":
         start = index * page_size
 
         # get tweets
-        tweets = db.tweets_copy.find({}).skip(start).limit(page_size)
+        tweets = db.tweets.find({}).skip(start).limit(page_size)
         # create dataset
         dataset = classifier.generate_dataset(tweets)
         # Classify tweets by topic

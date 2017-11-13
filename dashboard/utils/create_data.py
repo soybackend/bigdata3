@@ -131,7 +131,7 @@ if __name__ == "__main__":
             "location" : key,
             "count" : value,
         }
-        # db.locations.insert_one(data)
+        db.locations.insert_one(data)
 
     # Hashtags
     tweets_hashtags = db.tweets.find({'payload':{'$regex':'#'}})
@@ -145,7 +145,7 @@ if __name__ == "__main__":
             "hashtag" : key,
             "count" : value,
         }
-        # db.hashtags.insert_one(data)
+        db.hashtags.insert_one(data)
 
     # Quotes
     tweets_qts = db.tweets.find( {'payload':{'$regex':'@'}} )
@@ -159,7 +159,7 @@ if __name__ == "__main__":
             "quote" : key,
             "count" : value,
         }
-        # db.quotes.insert_one(data)
+        db.quotes.insert_one(data)
 
     # Summary
     data = {
@@ -170,7 +170,7 @@ if __name__ == "__main__":
         "total_quotes" : len(qts),
     }
     print(data)
-    # dto_id = db.summary.insert_one(data).inserted_id
+    dto_id = db.summary.insert_one(data).inserted_id
 
     # Topics & Polarity
     tweets_tp = db.tweets.find({}, {'topic_id': 1, 'polarity_id': 1, '_id': 0})
@@ -204,7 +204,7 @@ if __name__ == "__main__":
             "polarities" : polarities_tp,
         }
         # print(data)
-        # db.topics.insert_one(data)
+        db.topics.insert_one(data)
 
     for key, value in polarities.items():
         polarity = get_polarity(key)
@@ -213,4 +213,4 @@ if __name__ == "__main__":
             "polarity" : polarity,
             "count" : value,
         }
-        # db.polarities.insert_one(data)
+        db.polarities.insert_one(data)
