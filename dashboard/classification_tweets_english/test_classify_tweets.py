@@ -52,7 +52,7 @@ if __name__ == "__main__":
                                        max_features = 2000, vocabulary = vocabulary)
 
     # get tweets classified
-    tweets = db.tweets_classified_dataset_english.find({}).skip(1000).limit(200)
+    tweets = db.tweets_classified_dataset_english.find({}).skip(0).limit(50)
 
     # create dataset
     dataset = generate_training_dataset(tweets)

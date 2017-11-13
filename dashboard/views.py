@@ -202,7 +202,7 @@ def tweets(request):
                         content_type="application/json; charset=utf-8")
 
 def get_topic(key):
-    topic = 'Sin clasificar'
+    topic = 'sin clasificar'
     if key == 0:
         topic = 'otro'
     elif key == 1:
@@ -214,7 +214,7 @@ def get_topic(key):
     return topic
 
 def get_polarity(key):
-    polarity = 'Sin clasificar'
+    polarity = 'sin clasificar'
     if key == 1:
         polarity = 'negativo'
     elif key == 2:
@@ -225,6 +225,18 @@ def get_polarity(key):
         polarity = 'casi positivo'
     elif key == 5:
         polarity = 'positivo'
+    return polarity
+
+def get_polarity_english(key):
+    polarity = 'not classified'
+    if key == 1:
+        polarity = 'negative'
+    elif key == 2:
+        polarity = 'positive'
+    elif key == 3:
+        polarity = 'mixed'
+    elif key == 4:
+        polarity = 'other'
     return polarity
 
 
@@ -239,25 +251,37 @@ class TweetsView(TemplateView):
 
 @csrf_exempt
 def classify_tweet(request):
+    lang = request.GET.get('lang')
+
     if request.method == 'POST':
         classifier = Classification()
         json_data = json.loads(request.body.decode('utf-8'))
 
-        # create dataset
-        dataset = classifier.generate_dataset_single_text(json_data['text'])
-        # Classify tweets by topic
-        clf_topics = classifier.classify_by_topic(dataset)
-        topic_id = int(clf_topics[0])
-        # Classify tweets by polarity
-        clf_polarities = classifier.classify_by_polarity(dataset)
-        polarity_id = int(clf_polarities[0])
+        if lang is None or lang == 'es':
+            # create dataset
+            dataset = classifier.generate_dataset_single_text('spanish', json_data['text'])
+            # Classify tweets by topic
+            clf_topics = classifier.classify_by_topic(dataset)
+            topic_id = int(clf_topics[0])
+            # Classify tweets by polarity
+            clf_polarities = classifier.classify_by_polarity(dataset)
+            polarity_id = int(clf_polarities[0])
+            polarity = get_polarity(polarity_id)
+        else :
+            # create dataset
+            dataset = classifier.generate_dataset_single_text('english', json_data['text'])
+            topic_id = 0
+            # Classify tweets by polarity
+            clf_polarities = classifier.classify_by_polarity_english(dataset)
+            polarity_id = int(clf_polarities[0])
+            polarity = get_polarity_english(polarity_id)
 
         result = {
             'text': json_data['text'],
             'topic_id': topic_id,
             'topic' : get_topic(topic_id),
             'polarity_id': polarity_id,
-            'polarity': get_polarity(polarity_id),
+            'polarity': polarity,
         }
     else:
         result = "Method incorrect"

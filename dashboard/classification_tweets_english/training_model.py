@@ -18,13 +18,13 @@ def generate_training_dataset(tweets_classified):
     # load nltk data
     nltk.download('stopwords')
     # get spanish stopwords
-    spanish_stopwords = set(stopwords.words('english'))
+    en_stopwords = set(stopwords.words('english'))
 
     tweet_texts = []
     tweet_polarities = []
 
     for tweet in tweets_classified:
-        tweet_texts.append(get_preprocess_text(spanish_stopwords, tweet['text']))
+        tweet_texts.append(get_preprocess_text(en_stopwords, tweet['text']))
         tweet_polarities.append(tweet['polarity_id'])
     return [tweet_texts, tweet_polarities]
 
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     db = client.twitter
 
     # get tweets classified
-    tweets_classified = db.tweets_classified_dataset_english.find({}).limit(800)
+    tweets_classified = db.tweets_classified_dataset_english.find({}).limit(10000)
 
     # create training dataset
     training_dataset = generate_training_dataset(tweets_classified)
