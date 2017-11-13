@@ -329,3 +329,7 @@ class TopicsView(TemplateView):
 
 class TagCloudView(TemplateView):
     template_name = 'dashboard/tagcloud.html'
+
+
+class ClassifyView(TemplateView):
+    template_name = 'dashboard/clasify.html'
