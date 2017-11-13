@@ -4,7 +4,7 @@
  *
  * Last compiled on Wednesday, July 22nd, 2015, 9:20:49 AM
  */
- 
+
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic,300italic,300);
 @import url(http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800);
 /*!
@@ -5132,6 +5132,17 @@ a.thumbnail.active {
 }
 .alert-danger .alert-link {
   color: #e6e6e6;
+}
+.alert-primary {
+  background-color: #2574ab;
+  border-color: transparent;
+  color: #ffffff;
+}
+.alert-primary hr {
+  border-top-color: rgba(0, 0, 0, 0);
+}
+.alert-primary .alert-link {
+  color: #fff;
 }
 @-webkit-keyframes progress-bar-stripes {
   from {

@@ -40,8 +40,8 @@
                   </div>
                 </div>
                 <div class="form-gropu" id="result">
-
                 </div>
+                <br>
                 <hr>
                 <div class="row">
                   <div class="col-sm-12 col-sm-offset-5">
@@ -65,13 +65,42 @@
   $(document).ready(function(){
     $('#btn-clasificar').on('click', function(){
       var tweet = $("#tweet").val();
-      var lang = $("#lang").val();  
+      var lang = $("#lang").val();
       if(tweet=="" || tweet==null){
         alert("Ingresa un tweet para analizar");
       }
       else{
-        $.post("/classify_tweet/?lang="+lang, {text: tweet}, function(result){
-          console.log(result);
+        var request = $.ajax({
+            url: '/classify_tweet/?lang=' + lang,
+            type: 'POST',
+            data: JSON.stringify({text: tweet}),
+            contentType: 'application/json; charset=utf-8'
+        });
+
+        request.done(function(data) {
+          var polarity_class = "";
+          console.log(data.polarity_id);
+          switch (data.polarity_id) {
+            case 5:
+              polarity_class = "primary";
+              break;
+            case 4:
+              polarity_class = "info";
+              break;
+            case 3:
+              polarity_class = "success";
+              break;
+            case 2:
+              polarity_class = "warning";
+              break;
+            case 1:
+              polarity_class = "danger";
+              break;
+          }
+          $("#result").html('<div class="col-sm-12 alert alert-' + polarity_class + '">\
+            Tweet con polaridad <strong>' + data.polarity + '</strong> Tópico del tweet: <strong>' + data.topic + '</strong>.\
+          </div>');
+          console.log(data);
         });
       }
     });
