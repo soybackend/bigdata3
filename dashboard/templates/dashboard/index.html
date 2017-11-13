@@ -90,6 +90,18 @@
         <div class="col-xs-4 col-sm-5 col-md-4 page-user">
           <div class="panel">
             <div class="panel-heading">
+              <h4 class="panel-title">Análisis de Temas</h4>
+            </div>
+            <div class="panel-body">
+              <div class="page-icon">
+                <a href="{% url 'topics-view' %}" style="color:#fff"><i class="icon ion-ios-pulse-strong"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 page-products">
+          <div class="panel">
+            <div class="panel-heading">
               <h4 class="panel-title">Cuentas Involucradas</h4>
             </div>
             <div class="panel-body">
@@ -99,24 +111,10 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 page-products">
-          <div class="panel">
-            <div class="panel-heading">
-              <h4 class="panel-title">Listado Completo de Tweets</h4>
-            </div>
-            <div class="panel-body">
-              <div class="page-icon">
-                <a href="{% url 'tweets-view' %}" style="color:#fff">
-                  <i class="icon icon ion-social-twitter"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="col-xs-4 col-sm-3 col-md-2 page-events">
           <div class="panel">
             <div class="panel-heading">
-              <h4 class="panel-title">Hastags</h4>
+              <h4 class="panel-title">Hashtags</h4>
             </div>
             <div class="panel-body">
               <div class="page-icon">
@@ -153,10 +151,14 @@
         <div class="col-xs-4 col-sm-4 col-md-4 page-support">
           <div class="panel">
             <div class="panel-heading">
-              <h4 class="panel-title">Manage Support</h4>
+              <h4 class="panel-title">Listado Completo de Tweets</h4>
             </div>
             <div class="panel-body">
-              <div class="page-icon"><i class="icon ion-help-buoy"></i></div>
+              <div class="page-icon">
+                <a href="{% url 'tweets-view' %}" style="color:#fff">
+                  <i class="icon icon ion-social-twitter"></i>
+                </a>
+              </div>
             </div>
           </div>
         </div>

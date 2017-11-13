@@ -10,12 +10,12 @@
 
   <ol class="breadcrumb breadcrumb-quirk">
     <li><a href="{% url 'index'%}"><i class="fa fa-home mr5"></i> Dashboard</a></li>
-    <li class="active">Listado de Hashtags</li>
+    <li class="active">Listado de Citas</li>
   </ol>
     <div class="panel">
       <div class="panel-heading">
-        <h4 class="panel-title">Hashtags Más Reelevantes</h4>
-        <p>Las tendencias más importantes durante el ciclo de recolección fueron.</p>
+        <h4 class="panel-title">Cuentas citadas con Frecuencia</h4>
+        <p>Las cuentas citadas con mayor frecuencia durante el ciclo de recolección fueron.</p>
       </div>
       <div class="panel-body">
         <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
@@ -23,22 +23,22 @@
     </div><!-- panel -->
   <div class="panel">
     <div class="panel-heading">
-      <h4 class="panel-title">Listado Completo de Citas</h4>
-      <p>Se realizó la extracción de más de 40 mil tweets de las cuentas más relevanetes de los temas solicitados.</p>
+      <h4 class="panel-title">Listado Completo de Cuentas citadas</h4>
+      <p>Se realizó la extracción de más de 40 mil tweets de las cuentas más relevantes de los temas solicitados.</p>
     </div>
     <div class="panel-body">
       <div class="table-responsive">
         <table id="dataTable1" class="table table-bordered table-striped-col">
           <thead>
             <tr>
-              <th>Hashtag</th>
+              <th>Cuenta citada</th>
               <th>Cantidad de Tweets</th>
             </tr>
           </thead>
 
           <tfoot>
             <tr>
-              <th>Hashtag</th>
+              <th>Cuenta citada</th>
               <th>Cantidad de Tweets</th>
             </tr>
           </tfoot>
@@ -72,13 +72,13 @@ $(document).ready(function() {
     var chart_data = [];
     data.forEach(function(quote){
       chart_data.push([quote.quote, quote.count])
-    });    
+    });
     Highcharts.chart('container', {
       chart: {
           type: 'column'
       },
       title: {
-          text: 'Citas Más Populares'
+          text: 'Cuentas citadas con frecuencia'
       },
       xAxis: {
           type: 'category',
