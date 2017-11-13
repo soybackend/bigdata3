@@ -30,7 +30,7 @@ if __name__ == "__main__":
     data_test = dataset[1]
     print(result_bayes)
     print(data_test)
-    precision, recall, fscore, support = score(data_test, result_bayes, labels=[-1, 0 ,1])
+    precision, recall, fscore, support = score(data_test, result_bayes, labels=[-1, 0 ,1], average='micro')
     # Calculate performance metrics for Naive Bayes classifier
     print('precision: {}'.format(precision))
     print('recall: {}'.format(recall))
