@@ -54,6 +54,29 @@ def accounts(request):
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
+def selected_accounts(request):
+    data = db['accounts_selected_trace'].aggregate([{ '$group': {
+                                                   '_id': { 'screen_name': '$screen_name',
+                                                   'name': '$name',
+                                                   'image': '$image',
+                                                   'description': '$description'}
+
+    }}])
+    # aggregate([{ '$match': { 'topic_id' : key }},
+    #                                    { '$group': { '_id' : "$polarity_id", 'count':{ '$sum' : 1} } }])
+    result = []
+    for dto in data:
+        print(dto)
+        json_data = {
+            'screen_name': dto['_id']['screen_name'],
+            'name': dto['_id']['name'],
+            'image': dto['_id']['image'],
+            'description': dto['_id']['description'],
+        }
+        result.append(json_data)
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
 def accounts_classified(request):
     sort = request.GET.get('sort')
     if sort is None or sort not in ['1','-1']:
