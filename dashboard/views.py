@@ -64,7 +64,7 @@ def selected_accounts(request):
     }}])
     result = []
     for dto in data:
-        print(dto)
+        # print(dto)
         json_data = {
             'screen_name': dto['_id']['screen_name'],
             'name': dto['_id']['name'],
