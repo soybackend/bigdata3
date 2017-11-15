@@ -6,7 +6,7 @@ from .views import (
     classify_tweet, accounts_classified, accounts_classified_summary,
     LocationsView, QuotesView, TopicsView, TagCloudView, ClassifyView,
     AccountsTypeView, selected_accounts, MainAccountsView,
-    MainAccountsDetailView, supports, followers, RobotsView
+    MainAccountsDetailView, supports, followers, RobotsView, robots
 )
 
 urlpatterns = [
@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^classify_tweet/$', classify_tweet, name='classify_tweet'),
     url(r'^selected_accounts/$', selected_accounts, name='selected_accounts'),
     url(r'^supports/$', supports, name='supports'),
+    url(r'^robots/$', robots, name='robots'),
     url(
         r'^ver-polaridades/$',
         PolaritiesView.as_view(),
@@ -90,7 +91,7 @@ urlpatterns = [
     ),
     url(r'^followers/$', followers, name='followers'),
     url(
-        r'^robots/$',
+        r'^ver-robots/$',
         RobotsView.as_view(),
         name='robots-view'
     ),

@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .classify_tweets import Classification
 
 
+# client = MongoClient('172.24.99.98', 27017)
+# db = client['Grupo01']
 client = MongoClient('localhost', 27017)
 db = client['twitter']
 
@@ -127,6 +129,19 @@ def supports(request):
             result.append(json_data)
     else:
         result = 'Username parameter not found.'
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def robots(request):
+    data = db['accounts_robot'].find({})
+    result = []
+    for dto in data:
+        json_data = {
+            'account_name': dto['account_name'],
+            'image': dto['image'],
+            'description': dto['description'],
+        }
+        result.append(json_data)
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 
@@ -430,5 +445,5 @@ class RobotsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(RobotsView, self).get_context_data(**kwargs)
-        context['robots'] = db['accouns_robots'].find({})
+        context['robots'] = db['accounts_robot'].find({})
         return context
