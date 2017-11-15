@@ -62,8 +62,6 @@ def selected_accounts(request):
                                                    'description': '$description'}
 
     }}])
-    # aggregate([{ '$match': { 'topic_id' : key }},
-    #                                    { '$group': { '_id' : "$polarity_id", 'count':{ '$sum' : 1} } }])
     result = []
     for dto in data:
         print(dto)
@@ -79,10 +77,15 @@ def selected_accounts(request):
 
 def accounts_classified(request):
     sort = request.GET.get('sort')
-    if sort is None or sort not in ['1','-1']:
-        sort = -1
-    data = db['account_classified'].find({}).sort('polarity_score', int(sort))
-    # print(data)
+    username = request.GET.get('username')
+    if username is not None:
+        data = db['account_classified'].find({'account' : username})
+    else:
+        sort = request.GET.get('sort')
+        if sort is None or sort not in ['1','-1']:
+            sort = -1
+        data = db['account_classified'].find({}).sort('polarity_score', int(sort))
+
     result = []
     for dto in data:
         json_data = {
