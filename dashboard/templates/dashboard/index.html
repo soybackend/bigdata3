@@ -162,12 +162,12 @@
         <div class="col-xs-4 col-sm-4 col-md-4 page-support">
           <div class="panel">
             <div class="panel-heading">
-              <h4 class="panel-title">Listado Completo de Tweets</h4>
+              <h4 class="panel-title">Clasificador de tweets</h4>
             </div>
             <div class="panel-body">
               <div class="page-icon">
-                <a href="{% url 'tweets-view' %}" style="color:#fff">
-                  <i class="icon icon ion-social-twitter"></i>
+                <a href="{% url 'classify-view' %}" style="color:#fff">
+                  <i class="icon icon ion-search"></i>
                 </a>
               </div>
             </div>
@@ -176,12 +176,12 @@
         <div class="col-xs-4 col-sm-4 col-md-4 page-user">
           <div class="panel">
             <div class="panel-heading">
-              <h4 class="panel-title">Clasificador de tweets</h4>
+              <h4 class="panel-title">Listado Completo de Tweets</h4>
             </div>
             <div class="panel-body">
               <div class="page-icon">
-                <a href="{% url 'classify-view' %}" style="color:#fff">
-                  <i class="icon icon ion-search"></i>
+                <a href="{% url 'tweets-view' %}" style="color:#fff">
+                  <i class="icon icon ion-social-twitter"></i>
                 </a>
               </div>
             </div>
@@ -234,7 +234,7 @@
         $("#"+item).text(data[item]);
       }
     });
-    $.get('/accounts?offset=0&limit=7', function(data){
+    $.get('/accounts?offset=0&limit=10', function(data){
       $("#accounts").html('');
       data.forEach(function(user){
         var user_profile = "<li class='media'>\
