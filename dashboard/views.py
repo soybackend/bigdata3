@@ -395,9 +395,17 @@ class MainAccountsDetailView(TemplateView):
         context = super(MainAccountsDetailView, self).get_context_data(**kwargs)
         context['user'] = db['accounts'].find_one({'username' : username})
         context['user_details'] = db['account_classified'].find_one({'account' : username})
-        context['support'] = db['tweets_replies'].aggregate([{ '$match': { "original_username" : username }},
+        supports = db['tweets_replies'].aggregate([{ '$match': { "original_username" : username }},
                                                { '$group': { '_id' : "$reply_username", 'avg': { '$avg': "$support_score"} }},
                                                { '$sort': {'avg': -1} }])
+
+        data_support = []
+        for dto in supports:
+            data_support.append({
+                'account': dto['_id'],
+                'support_score': dto['avg'],
+            })
+        context['support'] = data_support
         return context
 
 
@@ -422,5 +430,5 @@ class RobotsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(RobotsView, self).get_context_data(**kwargs)
-        # context['robots'] = db['robots'].find({})
+        context['robots'] = db['accouns_robots'].find({})
         return context
