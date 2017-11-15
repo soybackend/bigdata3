@@ -64,7 +64,7 @@ def selected_accounts(request):
     }}])
     result = []
     for dto in data:
-        print(dto)
+        # print(dto)
         json_data = {
             'screen_name': dto['_id']['screen_name'],
             'name': dto['_id']['name'],
@@ -109,6 +109,24 @@ def accounts_classified_summary(request):
             'count': dto['count'],
         }
         result.append(json_data)
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
+
+def supports(request):
+    username = request.GET.get('username')
+    if (username is not None):
+        data = db['tweets_replies'].aggregate([{ '$match': { "original_username" : username }},
+                                               { '$group': { '_id' : "$reply_username", 'avg': { '$avg': "$support_score"} }},
+                                               { '$sort': {'avg': -1} }])
+        result = []
+        for dto in data:
+            json_data = {
+                'account': dto['_id'],
+                'support_score': dto['avg'],
+            }
+            result.append(json_data)
+    else:
+        result = 'Username parameter not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
 

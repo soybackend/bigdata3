@@ -82,6 +82,30 @@ class Classification():
             tweet_texts.append(self.get_preprocess_text(spanish_stopwords, tweet['payload']))
         return [tweet_texts]
 
+    def generate_dataset_replies(self, replies):
+        # load nltk data
+        nltk.download('stopwords')
+        # get spanish stopwords
+        spanish_stopwords = set(stopwords.words('spanish'))
+
+        reply_texts = []
+
+        for reply in replies:
+            reply_texts.append(self.get_preprocess_text(spanish_stopwords, reply['reply_text']))
+        return [reply_texts]
+
+    def generate_dataset_replies_original(self, replies):
+        # load nltk data
+        nltk.download('stopwords')
+        # get spanish stopwords
+        spanish_stopwords = set(stopwords.words('spanish'))
+
+        reply_texts = []
+
+        for reply in replies:
+            reply_texts.append(self.get_preprocess_text(spanish_stopwords, reply['original_text']))
+        return [reply_texts]
+
     def generate_dataset_single_text(self, lang, text):
         # load nltk data
         nltk.download('stopwords')
