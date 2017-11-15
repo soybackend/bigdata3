@@ -1,0 +1,30 @@
+{
+  "twitter": {
+    "consumer_key": "",
+    "consumer_secret": "",
+    "access_token_key": "",
+    "access_token_secret": ""
+  },
+  "accounts": [
+    "JuanLozano_R",
+    "RafaelPardo",
+    "ernestosamperp",
+    "AndresPastrana_",
+    "RestrepoJCamilo",
+    "CristoBustos",
+    "HoracioSerpa",
+    "alejogiral",
+    "Rodrigo_Lara_",
+    "carlosfgalan",
+    "AABenedetti",
+    "JuanManSantos",
+    "CGurisattiNTN24",
+    "Rodrigo_Rivera",
+    "bravorubendario",
+    "jcgalindovacha",
+    "TimoFARC",
+    "Carlozada_FARC",
+    "SandraFARC",
+    "AlapePastorFARC"
+  ]
+}

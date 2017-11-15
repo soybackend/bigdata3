@@ -333,3 +333,7 @@ class TagCloudView(TemplateView):
 
 class ClassifyView(TemplateView):
     template_name = 'dashboard/clasify.html'
+
+
+class AccountsType(TemplateView):
+    template_name = 'dashboard/accounts-type.html'

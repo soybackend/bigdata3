@@ -187,6 +187,20 @@
             </div>
           </div>
         </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 page-products">
+          <div class="panel">
+            <div class="panel-heading">
+              <h4 class="panel-title">Cuentas por Tipo</h4>
+            </div>
+            <div class="panel-body">
+              <div class="page-icon">
+                <a href="{% url 'accounts-type-view' %}" style="color:#fff">
+                  <i class="icon icon ion-shuffle"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div><!-- row -->
 
     </div><!-- col-md-9 -->
@@ -236,7 +250,6 @@
           </div>\
         </li>";
         $("#accounts").append(user_profile);
-        console.log(user);
       });
     });
   });
