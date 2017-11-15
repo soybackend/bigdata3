@@ -33,15 +33,15 @@
                 <h4 class='media-heading nomargin'><a target='_blank' href='https://twitter.com/" + user.username + "'>{{user.name}}</a></h4>
                 <input type="hidden" id="username" value="{{user.username}}">
                 <p>{{user.description}}</p>
-                <span>Score de Polaridad: {{user_details.polarity_score}}</span><br>
-                <span>Tipo: {{user_details.type}}</span><br>
-                <span>Ubicación: {{user.location}}</span><br>
+                <span><strong>Score de Polaridad: </strong>{{user_details.polarity_score}}</span><br>
+                <span><strong>Tipo: </strong>{{user_details.type}}</span><br>
+                <span><strong>Ubicación: </strong>{{user.location}}</span><br>
                 <span>{{user.tweets_count}}</span> Tweets publicados<br>
                 <span>{{user.rtweets_count}}</span> RT hechos<br><br>
                 <span><strong>Temas principales</strong></span><br>
                 <ul>
                   {% for tema in user_details.topics %}
-                    <li>{{tema.topic}}: {{tema.count}} tweets</li>
+                    <li><strong>{{tema.topic}}: </strong>{{tema.count}} tweets</li>
                   {% endfor %}
                 </ul><br>
                 <span><strong>Polaridad de sus tweets</strong></span><br>
