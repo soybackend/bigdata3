@@ -1,10 +1,10 @@
 from __future__ import print_function
 import twitter
 
-CONSUMER_KEY = 'rnSCGSqg7IdytdFz7pL5lGNDj'
-CONSUMER_SECRET = 'MzYwxrshahZSEWibNGO4cXa25lgyUKbVFEd1XvpkFkB0PVizgv'
-ACCESS_TOKEN = '312397870-aOWVDkctz4KW7uyRPaw2KNx5lbHjWloIAMg4dBDw'
-ACCESS_TOKEN_SECRET = 'VPjLb6yuaL39JCYdniTcVYP1kgSbCBHBcnfZ7K50e2Jb7'
+CONSUMER_KEY = 'xxxx'
+CONSUMER_SECRET = 'xxxx'
+ACCESS_TOKEN = 'xxxx'
+ACCESS_TOKEN_SECRET = 'xxxx'
 
 
 # Create an Api instance.
