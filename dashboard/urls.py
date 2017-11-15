@@ -5,8 +5,8 @@ from .views import (
     summary, accounts, hashtags, locations, quotes, polarities, topics, tweets,
     classify_tweet, accounts_classified, accounts_classified_summary,
     LocationsView, QuotesView, TopicsView, TagCloudView, ClassifyView,
-    AccountsTypeView, selected_accounts, MainAccountsView, 
-    MainAccountsDetailView, supports
+    AccountsTypeView, selected_accounts, MainAccountsView,
+    MainAccountsDetailView, supports, followers
 )
 
 urlpatterns = [
@@ -84,8 +84,9 @@ urlpatterns = [
         name='main-accounts-view'
     ),
     url(
-        r'^cuentas-principales/(?P<scree_name>[\w-]+)$',
+        r'^cuentas-principales/(?P<screen_name>[\w-]+)$',
         MainAccountsDetailView.as_view(),
         name='main-accounts-detail-view'
     ),
+    url(r'^followers/$', followers, name='followers'),
 ]

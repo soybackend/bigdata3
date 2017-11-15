@@ -389,3 +389,29 @@ class MainAccountsView(TemplateView):
 
 class MainAccountsDetailView(TemplateView):
     template_name = 'dashboard/detail-account.html'
+
+    def get_context_data(self, **kwargs):
+        username = self.kwargs['screen_name']
+        context = super(MainAccountsDetailView, self).get_context_data(**kwargs)
+        context['user'] = db['accounts'].find_one({'username' : username})
+        context['user_details'] = db['account_classified'].find_one({'account' : username})
+        context['support'] = db['tweets_replies'].aggregate([{ '$match': { "original_username" : username }},
+                                               { '$group': { '_id' : "$reply_username", 'avg': { '$avg': "$support_score"} }},
+                                               { '$sort': {'avg': -1} }])
+        return context
+
+
+def followers(request):
+    username = request.GET.get('username')
+    if (username is not None):
+        data = db['accounts_selected_trace'].find({'screen_name': username})
+        result = []
+        for row in data:
+            json_data = {
+                'count': row['followers_count']                
+            }
+            result.append(json_data)
+    else:
+        result = 'Username parameter not found.'
+    return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
+                        content_type="application/json; charset=utf-8")
