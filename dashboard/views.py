@@ -408,10 +408,19 @@ def followers(request):
         result = []
         for row in data:
             json_data = {
-                'count': row['followers_count']                
+                'count': row['followers_count']
             }
             result.append(json_data)
     else:
         result = 'Username parameter not found.'
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'),
                         content_type="application/json; charset=utf-8")
+
+
+class RobotsView(TemplateView):
+    template_name = 'dashboard/robots.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(RobotsView, self).get_context_data(**kwargs)
+        # context['robots'] = db['robots'].find({})
+        return context
