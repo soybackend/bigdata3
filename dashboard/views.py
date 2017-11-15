@@ -366,4 +366,8 @@ class AccountsTypeView(TemplateView):
 
 
 class MainAccountsView(TemplateView):
-    template_name = 'dashboard/cuentas-principales.html'
+    template_name = 'dashboard/main-accounts.html'
+
+
+class MainAccountsDetailView(TemplateView):
+    template_name = 'dashboard/detail-account.html'
