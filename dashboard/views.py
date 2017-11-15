@@ -361,5 +361,9 @@ class ClassifyView(TemplateView):
     template_name = 'dashboard/clasify.html'
 
 
-class AccountsType(TemplateView):
+class AccountsTypeView(TemplateView):
     template_name = 'dashboard/accounts-type.html'
+
+
+class MainAccountsView(TemplateView):
+    template_name = 'dashboard/cuentas-principales.html'
