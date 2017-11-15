@@ -5,7 +5,7 @@ from .views import (
     summary, accounts, hashtags, locations, quotes, polarities, topics, tweets,
     classify_tweet, accounts_classified, accounts_classified_summary,
     LocationsView, QuotesView, TopicsView, TagCloudView, ClassifyView,
-    AccountsType, selected_accounts, supports,
+    AccountsTypeView, selected_accounts, MainAccountsView, supports
 )
 
 urlpatterns = [
@@ -74,7 +74,12 @@ urlpatterns = [
     ),
     url(
         r'^cuentas-tipo/$',
-        AccountsType.as_view(),
+        AccountsTypeView.as_view(),
         name='accounts-type-view'
+    ),
+    url(
+        r'^cuentas-principales/$',
+        MainAccountsView.as_view(),
+        name='main-accounts-view'
     ),
 ]

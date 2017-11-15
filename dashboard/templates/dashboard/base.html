@@ -37,7 +37,7 @@
   <div class="headerpanel">
 
     <div class="logopanel">
-      <h2><a href="index.html">Taller 3</a></h2>
+      <h2><a href="{% url 'index' %}">Taller 3</a></h2>
     </div><!-- logopanel -->
 
     <div class="headerbar">
@@ -62,6 +62,7 @@
             <li class="active"><a href="{% url 'index' %} "><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
             <li class="active"><a href="{% url 'polarities-view' %} "><i class="icon ion-ios-pulse-strong"></i> <span>Análisis de Polaridades</span></a></li>
             <li class="active"><a href="{% url 'topics-view' %} "><i class="icon ion-ios-pulse-strong"></i> <span>Análisis de Temas</span></a></li>
+            <li class="active"><a href="{% url 'main-accounts-view' %} "><i class="icon ion-person-stalker"></i> <span>Cuentas Principales</span></a></li>
             <li class="active"><a href="{% url 'accounts-view' %} "><i class="icon ion-person-stalker"></i> <span>Cuentas Involucradas</span></a></li>
             <li class="active"><a href="{% url 'hashtags-view' %} "><i class="icon icon ion-pound"></i> <span>Listado de Hashtags</span></a></li>
             <li class="active"><a href="{% url 'tagcloud-view' %} "><i class="icon icon ion-cloud"></i><span>Análisis de Coyuntura</span></a></li>
@@ -69,7 +70,7 @@
             <li class="active"><a href="{% url 'quotes-view' %} "><i class="icon icon ion-at"></i> <span>Listado de Citas</span></a></li>
             <li class="active"><a href="{% url 'classify-view' %} "><i class="icon icon ion-search"></i> <span>Clasificador de Tweets</span></a></li>
             <li class="active"><a href="{% url 'accounts-type-view' %} "><i class="icon icon ion-shuffle"></i> <span>Cuentas por tipo</span></a></li>
-            <li class="active"><a href="{% url 'tweets-view' %} "><i class="icon icon ion-social-twitter"></i> <span>Listado de Tweets</span></a></li>
+            <li class="active"><a href="{% url 'tweets-view' %} "><i class="icon icon ion-social-twitter"></i> <span>Listado Completo de Tweets</span></a></li>
           </ul>
         </div>
       </div>
