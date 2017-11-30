@@ -4,10 +4,10 @@ from twitter.error import TwitterError
 import json
 from pymongo import MongoClient
 
-CONSUMER_KEY = '3hz2SAXrAOn3vK2PTf9OgcsD8'
-CONSUMER_SECRET = 'JWjXdmmQ8gDeL8tKE0oakRCChQMTtDGysic2PkzHYBRVIlIIFd'
-ACCESS_TOKEN = '312397870-aOWVDkctz4KW7uyRPaw2KNx5lbHjWloIAMg4dBDw'
-ACCESS_TOKEN_SECRET = 'VPjLb6yuaL39JCYdniTcVYP1kgSbCBHBcnfZ7K50e2Jb7'
+CONSUMER_KEY = 'xxxx'
+CONSUMER_SECRET = 'xxxx'
+ACCESS_TOKEN = 'xxxx'
+ACCESS_TOKEN_SECRET = 'xxxx'
 
 
 # Create an Api instance.
@@ -30,7 +30,7 @@ for account in accounts:
         print(profile.friends_count)
         print(profile.followers_count)
         print(profile.statuses_count)
-        if int(profile.friends_count) == 2001 or int(profile.followers_count) == 0:
+        if int(profile.friends_count) == 2001 or int(profile.followers_count) == 0 or int(profile.statuses_count) > 1000000:
             descrip = 'Cantidad de tweets ' + str(profile.statuses_count) + ', '
             descrip = descrip + 'siguiendo a ' + str(profile.friends_count)
             descrip = descrip + ' cuentas y con ' + str(profile.followers_count)
